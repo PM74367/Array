@@ -1,0 +1,66 @@
+#include <assert.h>
+#include <ctype.h>
+#include <limits.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int compare(const void *a,const void *b)
+{
+    int *aa=(int *)a;
+    int *bb=(int *)b;
+    return (*aa)>(*bb)?1:0;
+}
+int countPairs(int arr_count, int* arr, long k) {
+    qsort(arr, arr_count, sizeof(int), compare);
+    int count=0;
+    int i=0,j=0,l=0;
+    for(i=0;i<arr_count-1;i++)
+    {
+        printf("%d\n",arr[i]);
+        if(arr[i]==arr[i+1])
+        {
+            if(arr[i]*2==k)
+                count++;
+            continue;
+        }
+        int elem=k-arr[i];
+        j=i+1;
+        l=arr_count-1;
+        while(j<=l)
+        {
+            int mid=(j+l)/2;
+            if(arr[mid]==elem)
+            {
+                arr[mid]=k+1;
+                count++;
+                break;
+            }
+            else if (arr[mid]<elem) {
+                j=mid+1;
+            }
+            else {
+                l=mid-1;
+            }
+        }
+    }
+    return count;
+}
+
+int main()
+{
+  int n;
+  printf("Enter the no. of elements in array:");
+  scanf("%d",&n);
+  int *ar=(int *)malloc(sizeof(int)*n);
+  int i,k;
+  for(i=0;i<n;i++)
+    scanf("%d",&ar[i]);
+  scanf("%d",&k);
+  int res=countPairs(n,ar,k);
+  printf("%d",res);
+}
